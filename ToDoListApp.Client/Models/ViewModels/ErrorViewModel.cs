@@ -1,6 +1,6 @@
 using System;
 
-namespace ToDoListApp.Client.Models
+namespace ToDoListApp.Client.Models.ViewModels
 {
     public class ErrorViewModel
     {

@@ -10,48 +10,47 @@ namespace ToDoListApp.Domain.Models.Repo
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        protected readonly ToDoListDbContext _context;
-        public GenericRepository(ToDoListDbContext dbContext)
+        protected readonly DbContext _context;
+        public GenericRepository(DbContext dbContext)
         {
             this._context = dbContext;
         }
-        public void Add(T entity)
-        {
-            _context.Set<T>().AddAsync(entity);
-        }
-        public void AddRange(IEnumerable<T> entities)
-        {
-             _context.Set<T>().AddRangeAsync(entities);
-        }
+        
         public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> expression)
         {
             return await _context.Set<T>().Where(expression).ToListAsync();
         }
+
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _context.Set<T>().ToListAsync();
         }
+
         public async Task<T> GetByIdAsync(int id)
         {
             return await _context.Set<T>().FindAsync(id);
         }
-        public void Remove(T entity)
+
+        public Task Add(T entity)
         {
-             _context.Set<T>().Remove(entity);
+            var res = _context.Set<T>().Add(entity);
+
+            return Task.FromResult(res);
+        }
+
+        public void AddRange(IEnumerable<T> entities)
+        {
+            _context.Set<T>().AddRange(entities);
+        }
+        public Task Remove(T entity)
+        {
+            var res = _context.Set<T>().Remove(entity);
+
+            return Task.FromResult(res);
         }
         public void RemoveRange(IEnumerable<T> entities)
         {
             _context.Set<T>().RemoveRange(entities);
-        }
-
-        public void Update(T entity)
-        {
-            _context.Set<T>().Update(entity);
-        }
-
-        public void UpdateRange(IEnumerable<T> entities)
-        {
-            _context.Set<T>().UpdateRange(entities);
         }
     }
 }

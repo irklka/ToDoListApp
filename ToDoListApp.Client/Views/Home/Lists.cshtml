@@ -1,0 +1,7 @@
+﻿@model IEnumerable<ToDoListModel>
+
+    @foreach(var el in Model){
+        <h3>@el.Id</h3>
+        <h3>@el.Title</h3>
+        <h3>@el.IsVisible</h3>
+    }

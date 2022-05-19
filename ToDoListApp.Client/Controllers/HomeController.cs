@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
+using ToDoListApp.Client.Mappers;
 using ToDoListApp.Client.Models;
+using ToDoListApp.Client.Models.ViewModels;
 using ToDoListApp.Domain.Interfaces;
+using ToDoListApp.Domain.Models;
 
 namespace ToDoListApp.Client.Controllers
 {
@@ -27,6 +27,23 @@ namespace ToDoListApp.Client.Controllers
             return View();
         }
 
+        public IActionResult AddNewToDoList(ToDoListModel toDoList)
+        {
+            _unitOfWork.ToDoLists.Add(
+                new ToDoList
+                {
+                    Title = toDoList.Title,
+                    IsVisible = toDoList.IsVisible,
+                    CreationDate = DateTime.Now
+                });
+            _unitOfWork.Complete();
+            return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> Lists()
+        {
+            var lists = await _unitOfWork.ToDoLists.GetAllAsync();
+            return View(lists.ListOfToDoListsDomainToClientModel());
+        }
         public IActionResult Privacy()
         {
             return View();
