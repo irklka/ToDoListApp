@@ -26,19 +26,6 @@ namespace ToDoListApp.Client.Controllers
         {
             return View();
         }
-
-        public IActionResult AddNewToDoList(ToDoListModel toDoList)
-        {
-            _unitOfWork.ToDoLists.Add(
-                new ToDoList
-                {
-                    Title = toDoList.Title,
-                    IsVisible = toDoList.IsVisible,
-                    CreationDate = DateTime.Now
-                });
-            _unitOfWork.Complete();
-            return RedirectToAction("Index");
-        }
         public async Task<IActionResult> Lists()
         {
             var lists = await _unitOfWork.ToDoLists.GetAllAsync();

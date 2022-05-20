@@ -9,32 +9,3 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
-
-<form method="post" enctype="multipart/form-data" asp-action="AddNewToDoList" asp-controller="home">
-
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-        <div class="form-group">
-            <label asp-for="Title"></label>
-            <input asp-for="Title" class="form-control" required />
-            <span asp-validation-for="Title" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="IsVisible"></label>
-            <input asp-for="IsVisible" type="checkbox" />
-        </div>
-
-        @*<div class="form-group">
-            <label asp-for=""></label>
-            <select asp-for="LanguageId" class="form-control" asp-items="@Html.GetEnumSelectList<ToDoStatus>()" required>
-                <option value="">Please select your language</option>
-            </select>
-            <span asp-validation-for="LanguageId" class="text-danger"></span>
-        </div>*@
-
-
-        <div class="form-group">
-            <input type="submit" value="Add ToDo List" class="btn btn-primary" />
-        </div>
-    </form>

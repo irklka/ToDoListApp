@@ -1,0 +1,20 @@
+﻿@model ToDoListModel
+
+<div class="card card-outline-primary m-1 p-1">
+    <h3>To Do List</h3>
+    <div class="bg-faded p-1">
+        <h4>
+            Title: @Model.Title
+        </h4>
+    </div>
+    <div class="bg-faded p-1">
+        <h4>
+            Creation Date: @Model.CreationDate
+        </h4>
+    </div>
+    <div class="bg-faded p-1">
+        <h4>
+            Visibility: @Model.PrettyBool()
+        </h4>
+    </div>
+</div>

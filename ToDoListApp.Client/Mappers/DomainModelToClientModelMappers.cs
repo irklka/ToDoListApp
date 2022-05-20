@@ -7,7 +7,7 @@ using ToDoListApp.Domain.Models;
 
 namespace ToDoListApp.Client.Mappers
 {
-    public static class DTOToViewModel
+    public static class DomainModelToClientModelMappers
     {
         public static ToDoModel ToDoDomainToClientModel(this ToDo toDo)
         {
@@ -22,7 +22,7 @@ namespace ToDoListApp.Client.Mappers
             };
         }
 
-        public static ToDoListModel ToDoListDomainToClienModel(this ToDoList toDoList)
+        public static ToDoListModel ToDoListDomainToClientModel(this ToDoList toDoList)
         {
             return new ToDoListModel()
             {
@@ -36,7 +36,7 @@ namespace ToDoListApp.Client.Mappers
         }
 
         public static IEnumerable<ToDoListModel> ListOfToDoListsDomainToClientModel(this IEnumerable<ToDoList> enumer){
-            return enumer.Select(x => x.ToDoListDomainToClienModel());
+            return enumer.Select(x => x.ToDoListDomainToClientModel());
         }
         public static IEnumerable<ToDoModel> ListOfToDosDomainToClientModel(this IEnumerable<ToDo> enumer)
         {

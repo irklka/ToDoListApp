@@ -24,5 +24,9 @@ namespace ToDoListApp.Client.Models
         //{
         //    return $"Id: {Id,-5}\nTitle: {Title,-15}\nIsVisible: {IsVisible}";
         //}
+        public string PrettyBool()
+        {
+            return IsVisible ? "Visible" : "Not Visible";
+        }
     }
 }
