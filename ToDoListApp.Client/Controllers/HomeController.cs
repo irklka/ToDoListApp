@@ -26,11 +26,6 @@ namespace ToDoListApp.Client.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> Lists()
-        {
-            var lists = await _unitOfWork.ToDoLists.GetAllAsync();
-            return View(lists.ListOfToDoListsDomainToClientModel());
-        }
         public IActionResult Privacy()
         {
             return View();

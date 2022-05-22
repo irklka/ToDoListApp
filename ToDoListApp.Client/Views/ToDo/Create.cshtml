@@ -1,0 +1,41 @@
+﻿@model ToDoModel
+
+<form method="post" enctype="multipart/form-data" asp-action="Create" asp-controller="ToDo">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="text-light">
+        <div class="form-group">
+            <label asp-for="Title"></label>
+            <input asp-for="Title" class="form-control" required />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" class="form-control" required></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Status"></label>
+            <select asp-for="Status" class="form-control" asp-items="@Html.GetEnumSelectList<ToDoStatus>()" required>
+                <option value="">Please select status</option>
+            </select>
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DueDate"></label>
+            <input asp-for="DueDate" class="form-control" />
+            <span asp-validation-for="DueDate" class="text-danger"></span>
+        </div>
+        
+            @*<input hidden asp-for="ToDoList" value="@ViewBag.List" class="form-control" />*@
+            <input hidden asp-for="ToDoListId" value="@ViewBag.ListId" class="form-control" />
+            <input hidden asp-for="Id" value="0" class="form-control" />
+
+        <div class="form-group">
+            <input type="submit" value="Add ToDo List" class="btn btn-primary" />
+        </div>
+    </div>
+</form>

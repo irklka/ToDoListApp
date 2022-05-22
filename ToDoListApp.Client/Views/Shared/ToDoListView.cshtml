@@ -1,24 +1,19 @@
 ﻿@model ToDoListModel
 
 
-<div class="card card-outline-primary m-1 p-1">
+<div class="card border-light bg-info rounded-pill text-whit">
+    <div class="container row p-1">
+        <h2 class="col-4 card-title">
+            @Model.Title
+        </h2>
+        <div class="col-4 badge badge-warning">
+            <h6>Creation Date: @(Model.CreationDate.ToString("dd/MM/yy HH:mm"))</h6>
+        </div>
 
-      <div class="bg-faded p-1">
-          <h4>
-              @Model.Title
-              <span class="badge badge-pill badge-primary" style="float:right">
-                  <small>@Model.CreationDate</small>
-              </span>
-          </h4>
-      </div>
-
-      <form id="@Model.Id" method="post" asp-action="Details" asp-controller="ToDoList"  asp-antiforgery="true">
-          <input type="hidden" asp-for="Id"/>
-          <span class="card-text p-1">
-              <button type="submit" class="btn btn-success btn-sm pull-right" style="float:right">
-                  Details
-              </button>
-          </span>
-      </form>
-
-  </div>
+        <span class="col-4">
+            <a class="btn btn-text btn-info" asp-controller="ToDoList" asp-action="Details" asp-route-id="@Model.Id">
+                Details
+            </a>
+        </span>
+    </div>
+</div>

@@ -1,9 +1,12 @@
 ﻿@model ToDoListModel
 <form method="post" enctype="multipart/form-data" asp-action="Create" asp-controller="ToDoList">
 
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="text-light">
         <div class="form-group">
+            <h3>Create New To Do List</h3>
+        </div>
+        <div class="form-group text-light">
             <label asp-for="Title"></label>
             <input asp-for="Title" class="form-control" required />
             <span asp-validation-for="Title" class="text-danger"></span>
@@ -11,19 +14,13 @@
 
         <div class="form-group">
             <label asp-for="IsVisible"></label>
-            <input asp-for="IsVisible" type="checkbox" />
+            <input asp-for="IsVisible" type="checkbox" checked="true" />
         </div>
-
-        @*<div class="form-group">
-            <label asp-for=""></label>
-            <select asp-for="LanguageId" class="form-control" asp-items="@Html.GetEnumSelectList<ToDoStatus>()" required>
-                <option value="">Please select your language</option>
-            </select>
-            <span asp-validation-for="LanguageId" class="text-danger"></span>
-        </div>*@
-
 
         <div class="form-group">
             <input type="submit" value="Add ToDo List" class="btn btn-primary" />
+
+            <a class="btn btn-primary float-right m-1" asp-controller="ToDoList" asp-action="Index">Back</a>
         </div>
-    </form>
+    </div>
+</form>

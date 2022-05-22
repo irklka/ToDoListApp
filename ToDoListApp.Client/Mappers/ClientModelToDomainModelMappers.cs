@@ -16,7 +16,8 @@ namespace ToDoListApp.Client.Mappers
                 Description = toDo.Description,
                 CreationDate = toDo.CreationDate,
                 DueDate = toDo.DueDate,
-                Status = toDo.Status
+                Status = toDo.Status,
+                ToDoListId = toDo.ToDoListId
             };
         }
 

@@ -24,6 +24,7 @@ namespace ToDoListApp.Client.Models
         public DateTime CreationDate { get; set; } = DateTime.Now;
 
         [Display(Name = "Due Date")]
+        [DataType(DataType.DateTime)]
         public DateTime DueDate { get; set; }
         public int ToDoListId { get; set; }
         public ToDoListModel ToDoList { get; set; }

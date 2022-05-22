@@ -1,10 +1,13 @@
 ﻿@model IEnumerable<ToDoListModel>
-
-  <div>
-      <a class="btn btn-primary" asp-controller="ToDoList" asp-action="Create">Create new</a>
-  </div>
-
-@foreach (var m in Model) 
-{
-    <partial name="ToDoListView" model="m" />
-}
+<div class="bg-dark text-white">
+    <h1> To Do Lists</h1>
+    <div class="card border-0 m-1 p-1 bg-dark">
+        @foreach (var m in Model)
+        {
+            <partial name="ToDoListView" model="m" />
+        }
+        <div class="m-1 p-1">
+            <a class="btn btn-primary float-right" asp-controller="ToDoList" asp-action="Create">Create new</a>
+        </div>
+    </div>
+</div>

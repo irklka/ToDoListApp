@@ -1,7 +1,7 @@
 ﻿@model ToDoListModel
 
-<div class="card card-outline-primary m-1 p-1">
-    <h3>To Do List</h3>
+<div class="card border-light border-left-0 border-top-0 border-right-0 bg-dark text-white m-1 p-1">
+    <h3 class="card-title display-4">To Do List</h3>
     <div class="bg-faded p-1">
         <h4>
             Title: @Model.Title
@@ -17,4 +17,10 @@
             Visibility: @Model.PrettyBool()
         </h4>
     </div>
+    <div class="m-1 p-1">
+        <a class="btn btn-primary float-left m-1" asp-controller="ToDo" asp-action="Create" asp-route-id="@Model.Id">Add Todo</a>
+        <a class="btn btn-primary float-right m-1" asp-controller="ToDoList" asp-action="Index">Back</a>
+        <a class="btn btn-primary float-right m-1" asp-controller="ToDoList" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    </div>
+    <vc:todos id="@Model.Id"/>
 </div>

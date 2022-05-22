@@ -1,0 +1,23 @@
+﻿@model IEnumerable<ToDoModel>
+
+<div class="bg-dark text-white">
+    <h3> To Do's</h3>
+    <div class="card border-0 m-1 p-1 bg-dark">
+        @if (Model.Count() == 0)
+        {
+            <h3>"No Todo's To display"</h3>
+        }
+        else
+        {
+            @foreach (var m in Model)
+            {
+                <partial name="ToDoView" model="m" />
+            }
+        }
+
+
+        <div class="m-1 p-1">
+            <a class="btn btn-primary float-right" asp-controller="ToDo" asp-action="Create">Create new</a>
+        </div>
+    </div>
+</div>

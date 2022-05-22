@@ -29,10 +29,12 @@ namespace ToDoListApp.Client
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<ToDoListDbContext>(options => 
+
+            services.AddDbContext<ToDoListDbContext>(options =>
             options.UseSqlServer(
                 Configuration.GetConnectionString("ToDoDbConnection"),
                 b => b.MigrationsAssembly(typeof(ToDoListDbContext).Assembly.FullName)));
+
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IToDoListRepository, ToDoListRepository>();
             services.AddTransient<IToDoRepository, ToDoRepository>();
