@@ -2,22 +2,4 @@
 
 Todo List application using Asp.Net Core Mvc 
 
-Todo List 
-=> Title
-=> Visibility
-=> Creation Date
-=> Collection of Todo's
-    Todo
-    => Title
-    => Description
-    => Status (Not Started, In Progress, Completed)
-    => CreationDate
-    => DueDate 
-    
-Functionality
-=> Store Todo List and Todo's in Db
-=> Hide/Show Todo List's on the view
-=> Edit/Remove each Todo List or Todo entry
-=> Hide Completed Todo's
-=> Show Todo's due today
-=> Details page for Todo list and Todo
+![image](https://user-images.githubusercontent.com/62106615/169914380-736908b9-ceba-48f3-8984-3b157ccfcfe2.png)
