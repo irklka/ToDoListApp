@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using ToDoListApp.Domain.Interfaces;
 using ToDoListApp.Client.Mappers;
+using System.Collections.Generic;
+using ToDoListApp.Client.Models;
 
 namespace ToDoListApp.Client.Components
 {
@@ -15,7 +17,7 @@ namespace ToDoListApp.Client.Components
         public async Task<IViewComponentResult> InvokeAsync(int id)
         {
             var todos = await _unitOfWork.ToDo.GetTodosForToDoListWithId(id);
-            if (todos.Count == 0) return View();
+            if (todos.Count == 0) return View(todos.ListOfToDosDomainToClientModel());
             return View(todos.ListOfToDosDomainToClientModel());
         }
     }

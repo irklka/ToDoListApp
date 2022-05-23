@@ -70,7 +70,7 @@ namespace ToDoListApp.Client.Controllers
         // GET: ToDoListController/Edit/5
         public async Task<ViewResult> Edit(int id)
         {
-            if (id <= 0)
+            if (id < 0)
             {
                 return View();
             }
@@ -99,27 +99,21 @@ namespace ToDoListApp.Client.Controllers
             }
         }
 
-        // GET: ToDoListController/Delete/5
-        public async Task<ViewResult> Delete(int id)
-        {
-            var list = await _unitOfWork.ToDoLists.GetByIdAsync(id);
-            await _unitOfWork.ToDoLists.Remove(list);
-
-            return View(nameof(Index));
-        }
-
-        // POST: ToDoListController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
+                var list = await _unitOfWork.ToDoLists.GetByIdAsync(id);
+                var todos = await _unitOfWork.ToDo.GetTodosForToDoListWithId(id);
+                _unitOfWork.ToDo.RemoveRange(todos);
+                await _unitOfWork.ToDoLists.Remove(list);
+                _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return StatusCode(404);
             }
         }
     }

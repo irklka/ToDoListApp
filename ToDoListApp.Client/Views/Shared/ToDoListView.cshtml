@@ -1,18 +1,21 @@
 ﻿@model ToDoListModel
 
 
-<div class="card border-light bg-info rounded-pill text-whit">
-    <div class="container row p-1">
-        <h2 class="col-4 card-title">
+<div class="card border-light bg-info rounded-pill text-whit m-1">
+    <div class="container row p-1 align-items-center ">
+        <h2 class="col-4 card-title text-center">
             @Model.Title
         </h2>
         <div class="col-4 badge badge-warning">
             <h6>Creation Date: @(Model.CreationDate.ToString("dd/MM/yy HH:mm"))</h6>
         </div>
 
-        <span class="col-4">
-            <a class="btn btn-text btn-info" asp-controller="ToDoList" asp-action="Details" asp-route-id="@Model.Id">
+        <span class="col-4 d-flex justify-content-center">
+            <a class="btn btn-info btn-outline-warning m-1" asp-controller="ToDoList" asp-action="Details" asp-route-id="@Model.Id">
                 Details
+            </a>
+            <a class="btn bg-secondary btn-outline-danger m-1" onclick="return confirm('Item will be deleted.')" asp-controller="ToDoList" asp-action="Delete" asp-route-id="@Model.Id">
+                Delete
             </a>
         </span>
     </div>

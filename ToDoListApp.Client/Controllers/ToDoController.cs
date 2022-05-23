@@ -19,12 +19,13 @@ namespace ToDoListApp.Client.Controllers
             _unitOfWork = unitOfWork;
         }
         // GET: ToDoController/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            return View();
+            var todo = await _unitOfWork.ToDo.GetByIdAsync(id);
+            return View(todo.ToDoDomainToClientModel());
         }
 
-        // GET: ToDoController/Create
+        // GET: ToDoController/Create/5
         public ActionResult Create(int id)
         {
             ViewBag.ListId = id;
@@ -37,8 +38,7 @@ namespace ToDoListApp.Client.Controllers
         public async Task<ActionResult> Create(ToDoModel todo)
         {
             if (todo == null || !ModelState.IsValid) return StatusCode(400);
-           //var list = await _unitOfWork.ToDoLists.GetByIdAsync(todo.ToDoListId);
-           //todo.ToDoList = list.ToDoListDomainToClientModel();
+
             try
             {
                 await _unitOfWork.ToDo.Add(todo.ToDoClientToDomainModel());
@@ -64,32 +64,28 @@ namespace ToDoListApp.Client.Controllers
         {
             try
             {
-                return RedirectToAction("Index", "ToDoListController");
+                return RedirectToAction("Index", "ToDoList");
             }
             catch
             {
                 return View();
             }
-        }
-
-        // GET: ToDoController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
         }
 
         // POST: ToDoController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [HttpGet]
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                return RedirectToAction("Index", "ToDoListController");
+                var todo = await _unitOfWork.ToDo.GetByIdAsync(id);
+                await _unitOfWork.ToDo.Remove(todo);
+                _unitOfWork.Complete();
+                return RedirectToAction("Details", "ToDoList",new { id = todo.ToDoListId });
             }
             catch
             {
-                return View();
+                return StatusCode(404);
             }
         }
     }

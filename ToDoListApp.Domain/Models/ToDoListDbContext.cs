@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ToDoListApp.Domain.Enums;
 
 namespace ToDoListApp.Domain.Models
 {
@@ -11,6 +12,16 @@ namespace ToDoListApp.Domain.Models
 
         public DbSet<ToDoList> ToDoLists { get; set; }
         public DbSet<ToDo> ToDos { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .Entity<ToDo>()
+                .Property(e => e.Status)
+                .HasConversion(
+                    v => (int)v,
+                    v => (ToDoStatus)v);
+        }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{

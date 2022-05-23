@@ -25,9 +25,14 @@ namespace ToDoListApp.Client.Models
 
         [Display(Name = "Due Date")]
         [DataType(DataType.DateTime)]
-        public DateTime DueDate { get; set; }
+        public DateTime? DueDate { get; set; }
         public int ToDoListId { get; set; }
         public ToDoListModel ToDoList { get; set; }
+
+        public string PrettyDateTime()
+        {
+            return DueDate.HasValue ? DueDate.Value.ToString("dd/MM/yy HH:mm") : "No Due Date Yet";
+        }
 
         //public override string ToString()
         //{
