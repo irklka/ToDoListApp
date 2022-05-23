@@ -1,23 +1,28 @@
-﻿@model ToDoListModel
+﻿@model ToDoListViewModel
 
-<div class="card border-light border-left-0 border-top-0 border-right-0 bg-dark text-white m-1 p-1">
-    <h3 class="card-title display-4">Title: @Model.Title</h3>
+<div class="card border-0 bg-dark text-white m-1 p-1">
+    <h3 class="card-title display-4">Title: @Model.ToDoList.Title</h3>
     <div class="bg-faded p-1">
     </div>
     <div class="bg-faded p-1">
         <h4>
-            Creation Date: @Model.CreationDate
+            Creation Date: @Model.ToDoList.CreationDate
         </h4>
     </div>
     <div class="bg-faded p-1">
         <h4>
-            Visibility: @Model.PrettyBool()
+            Visibility: @Model.ToDoList.PrettyBool()
         </h4>
     </div>
-    <div class="m-1 p-1">
-        <a class="btn btn-primary float-left m-1" asp-controller="ToDo" asp-action="Create" asp-route-id="@Model.Id">Add Todo</a>
-        <a class="btn btn-primary float-right m-1" asp-controller="ToDoList" asp-action="Index">Back</a>
-        <a class="btn btn-primary float-right m-1" asp-controller="ToDoList" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    <div class="m-2 p-1">
+        <a class="btn btn-primary bg-dark btn-outline-light text-light font-weight-bold float-left m-1" asp-controller="ToDo" asp-action="Create" asp-route-id="@Model.ToDoList.Id">Add Todo</a>
+        <a class="btn bg-danger btn-outline-light text-light font-weight-bold float-right m-1" onclick="return confirm('Item will be deleted.')" asp-controller="ToDoList" asp-action="Delete" asp-route-id="@Model.ToDoList.Id">
+            Delete
+        </a>
+        <a class="btn btn-secondary btn-outline-light font-weight-bold float-right m-1" asp-controller="ToDoList" asp-action="Index">Back</a>
+        <a class="btn btn-outline-light float-right font-weight-bold m-1" asp-controller="ToDoList" asp-action="Edit" asp-route-id="@Model.ToDoList.Id">Edit</a>
     </div>
-    <vc:todos id="@Model.Id"/>
+    <h3> To Do's</h3>
+
+    <vc:todos id="@Model.ToDoList.Id" hide-completed="@Model.HideCompleted" />
 </div>

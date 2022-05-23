@@ -34,6 +34,17 @@ namespace ToDoListApp.Client.Models
             return DueDate.HasValue ? DueDate.Value.ToString("dd/MM/yy HH:mm") : "No Due Date Yet";
         }
 
+        public string PrettyEnum()
+        {
+            return Status switch
+            {
+                ToDoStatus.Completed => "Completed",
+                ToDoStatus.InProgress => "In Progress",
+                ToDoStatus.NotStarted => "Not Started",
+                _ => "No Enum Selected",
+            };
+        }
+
         //public override string ToString()
         //{
         //    return $"Id: {Id,-5}\nTitle: {Title,-15}\n" +

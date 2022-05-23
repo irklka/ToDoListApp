@@ -6,6 +6,7 @@ using ToDoListApp.Domain.Interfaces;
 using ToDoListApp.Client.Mappers;
 using ToDoListApp.Client.Models;
 using ToDoListApp.Client.Models.ViewModels;
+using System.Diagnostics;
 
 namespace ToDoListApp.Client.Controllers
 {
@@ -13,7 +14,10 @@ namespace ToDoListApp.Client.Controllers
     {
         private readonly ILogger<ToDoListController> _logger;
         private readonly IUnitOfWork _unitOfWork;
-        public ToDoListController(ILogger<ToDoListController> logger,IUnitOfWork unitOfWork)
+
+        private bool HideCompeted { get; set; }
+
+        public ToDoListController(ILogger<ToDoListController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
@@ -31,14 +35,14 @@ namespace ToDoListApp.Client.Controllers
         // GET: ToDoListController/Details/5
         public async Task<ViewResult> Details(int id)
         {
-            if(id <= 0)
+            if (id <= 0)
             {
                 return View();
             }
             var toDoList = await _unitOfWork.ToDoLists.GetByIdAsync(id);
             _unitOfWork.Complete();
 
-            return View(toDoList.ToDoListDomainToClientModel());
+            return View( new ToDoListViewModel() { ToDoList = toDoList.ToDoListDomainToClientModel(), HideCompleted = this.HideCompeted });
         }
 
         // GET: ToDoListController/Create
@@ -52,7 +56,7 @@ namespace ToDoListApp.Client.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(ToDoListModel list)
         {
-            if (list == null || !ModelState.IsValid) return StatusCode(400);
+            if (list == null || !ModelState.IsValid) return RedirectToAction(nameof(Error));
 
             try
             {
@@ -64,7 +68,7 @@ namespace ToDoListApp.Client.Controllers
             {
                 return View();
             }
-            
+
         }
 
         // GET: ToDoListController/Edit/5
@@ -90,6 +94,7 @@ namespace ToDoListApp.Client.Controllers
         {
             try
             {
+                _unitOfWork.ToDoLists.Update(list.ToDoListClientToDomainModel());
                 _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
@@ -115,6 +120,12 @@ namespace ToDoListApp.Client.Controllers
             {
                 return StatusCode(404);
             }
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error(int statusCode)
+        {
+            return View(new ErrorViewModel { StatusCode = statusCode, RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

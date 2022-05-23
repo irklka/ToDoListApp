@@ -52,5 +52,11 @@ namespace ToDoListApp.Domain.Models.Repo
         {
             _context.Set<T>().RemoveRange(entities);
         }
+        public Task Update(T entity)
+        {
+            var res = _context.Set<T>().Update(entity);
+
+            return Task.FromResult(res);
+        }
     }
 }

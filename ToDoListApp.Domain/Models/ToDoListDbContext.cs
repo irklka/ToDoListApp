@@ -15,12 +15,12 @@ namespace ToDoListApp.Domain.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder
-                .Entity<ToDo>()
-                .Property(e => e.Status)
-                .HasConversion(
-                    v => (int)v,
-                    v => (ToDoStatus)v);
+            //modelBuilder
+            //    .Entity<ToDo>()
+            //    .Property(e => e.Status)
+            //    .HasConversion(
+            //        v => v.ToString(),
+            //        v => Enum.Parse<ToDoStatus>(v));
         }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

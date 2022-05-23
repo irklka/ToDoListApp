@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using ToDoListApp.Client.Mappers;
 using ToDoListApp.Client.Models;
+using ToDoListApp.Client.Models.ViewModels;
 using ToDoListApp.Domain.Interfaces;
-using ToDoListApp.Domain.Models.UnitOfWork;
 
 namespace ToDoListApp.Client.Controllers
 {
@@ -37,7 +38,7 @@ namespace ToDoListApp.Client.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(ToDoModel todo)
         {
-            if (todo == null || !ModelState.IsValid) return StatusCode(400);
+            if (todo == null || !ModelState.IsValid) return RedirectToAction(nameof(Error), new { statusCode = StatusCodes.Status403Forbidden });
 
             try
             {
@@ -52,9 +53,19 @@ namespace ToDoListApp.Client.Controllers
         }
 
         // GET: ToDoController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            if (id < 0)
+            {
+                return View();
+            }
+            var todo = await _unitOfWork.ToDo.GetByIdAsync(id);
+
+            if (todo == null)
+            {
+                return View();
+            }
+            return View(todo.ToDoDomainToClientModel());
         }
 
         // POST: ToDoController/Edit/5
@@ -64,7 +75,9 @@ namespace ToDoListApp.Client.Controllers
         {
             try
             {
-                return RedirectToAction("Index", "ToDoList");
+                _unitOfWork.ToDo.Update(todo.ToDoClientToDomainModel());
+                _unitOfWork.Complete();
+                return RedirectToAction("Details", "ToDoList", new { id = todo.ToDoListId });
             }
             catch
             {
@@ -85,8 +98,14 @@ namespace ToDoListApp.Client.Controllers
             }
             catch
             {
-                return StatusCode(404);
+                return RedirectToAction(nameof(Error), 404);
             }
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error(int statusCode)
+        {
+            return View(new ErrorViewModel { StatusCode = statusCode, RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

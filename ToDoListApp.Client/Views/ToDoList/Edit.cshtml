@@ -1,5 +1,44 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ToDoListModel
+
 @{
+    ViewData["Title"] = "Edit";
 }
+<div class="container text-light">
+    <h1>Edit</h1>
+
+    <h4>ToDo List</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IsVisible"></label>
+                    <input type="checkbox" asp-for="IsVisible" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="CreationDate" class="control-label"></label>
+                    <input asp-for="CreationDate" class="form-control" />
+                    <span asp-validation-for="CreationDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-dark text-light font-weight-bold btn-outline-light float-left m-1" />
+                </div>
+            </form>
+        </div>
+    </div>
+        <a class="btn btn-info btn-sm pull-right float-right m-1" asp-controller="ToDoList" asp-action="Details" asp-route-id="@Model.Id">
+            Back
+        </a>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

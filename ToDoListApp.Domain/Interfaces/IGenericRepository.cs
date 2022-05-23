@@ -14,5 +14,6 @@ namespace ToDoListApp.Domain.Interfaces
         void AddRange(IEnumerable<T> entities);
         Task Remove(T entity);
         void RemoveRange(IEnumerable<T> entities);
+        Task Update(T entity);
     }
 }
