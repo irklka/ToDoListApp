@@ -7,6 +7,9 @@ namespace ToDoListApp.Client.Models.ViewModels
         public ToDoListModel ToDoList { get; set; }
 
         [Display(Name = "Hide Completed ToDo's")]
-        public bool HideCompleted { get; set; }                   
+        public bool HideCompleted { get; set; }
+
+        [Display(Name = "Show ToDo's Due Today")]
+        public bool DueToday { get; set; }
     }
 }

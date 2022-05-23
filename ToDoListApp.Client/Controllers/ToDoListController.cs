@@ -7,6 +7,7 @@ using ToDoListApp.Client.Mappers;
 using ToDoListApp.Client.Models;
 using ToDoListApp.Client.Models.ViewModels;
 using System.Diagnostics;
+using System.Linq;
 
 namespace ToDoListApp.Client.Controllers
 {
@@ -14,8 +15,6 @@ namespace ToDoListApp.Client.Controllers
     {
         private readonly ILogger<ToDoListController> _logger;
         private readonly IUnitOfWork _unitOfWork;
-
-        private bool HideCompeted { get; set; }
 
         public ToDoListController(ILogger<ToDoListController> logger, IUnitOfWork unitOfWork)
         {
@@ -29,7 +28,16 @@ namespace ToDoListApp.Client.Controllers
             var toDoLists = await _unitOfWork.ToDoLists.GetAllAsync();
             _unitOfWork.Complete();
 
-            return View(toDoLists.ListOfToDoListsDomainToClientModel());
+            return View(toDoLists.Where(x => x.IsVisible).ListOfToDoListsDomainToClientModel());
+        }
+
+        // GET: ToDoListController
+        public async Task<ViewResult> InvisibleLists()
+        {
+            var toDoLists = await _unitOfWork.ToDoLists.GetAllAsync();
+            _unitOfWork.Complete();
+
+            return View("Index", toDoLists.Where(x => !x.IsVisible).ListOfToDoListsDomainToClientModel());
         }
 
         // GET: ToDoListController/Details/5
@@ -40,10 +48,44 @@ namespace ToDoListApp.Client.Controllers
                 return View();
             }
             var toDoList = await _unitOfWork.ToDoLists.GetByIdAsync(id);
-            _unitOfWork.Complete();
+            if (toDoList == null)
+            {
+                return View(nameof(Error), new { statusCode = StatusCodes.Status404NotFound });
+            }
 
-            return View( new ToDoListViewModel() { ToDoList = toDoList.ToDoListDomainToClientModel(), HideCompleted = this.HideCompeted });
+            return View(new ToDoListViewModel() { ToDoList = toDoList.ToDoListDomainToClientModel(), HideCompleted = false, DueToday = false });
         }
+
+        public async Task<ViewResult> DetailsHidden(int id)
+        {
+            if (id <= 0)
+            {
+                return View();
+            }
+            var toDoList = await _unitOfWork.ToDoLists.GetByIdAsync(id);
+            if (toDoList == null)
+            {
+                return View(nameof(Error), new { statusCode = StatusCodes.Status404NotFound });
+            }
+
+            return View("Details", new ToDoListViewModel() { ToDoList = toDoList.ToDoListDomainToClientModel(), HideCompleted = true, DueToday = false });
+        }
+
+        public async Task<ViewResult> DetailsToday(int id)
+        {
+            if (id <= 0)
+            {
+                return View();
+            }
+            var toDoList = await _unitOfWork.ToDoLists.GetByIdAsync(id);
+            if (toDoList == null)
+            {
+                return View(nameof(Error), new { statusCode = StatusCodes.Status404NotFound });
+            }
+
+            return View("Details", new ToDoListViewModel() { ToDoList = toDoList.ToDoListDomainToClientModel(), HideCompleted = false, DueToday = true });
+        }
+
 
         // GET: ToDoListController/Create
         public IActionResult Create()
@@ -66,7 +108,7 @@ namespace ToDoListApp.Client.Controllers
             }
             catch
             {
-                return RedirectToAction(nameof(Error), 404);
+                return RedirectToAction(nameof(Error), new { statusCode = StatusCodes.Status406NotAcceptable });
             }
 
         }

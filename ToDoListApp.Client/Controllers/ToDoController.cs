@@ -38,17 +38,20 @@ namespace ToDoListApp.Client.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(ToDoModel todo)
         {
-            if (todo == null || !ModelState.IsValid) return RedirectToAction(nameof(Error), new { statusCode = StatusCodes.Status403Forbidden });
+            if (todo == null || !ModelState.IsValid)
+            {
+                return RedirectToAction(nameof(Error), new { statusCode = StatusCodes.Status403Forbidden });
+            }
 
             try
             {
                 await _unitOfWork.ToDo.Add(todo.ToDoClientToDomainModel());
                 _unitOfWork.Complete();
-                return RedirectToAction("Index", "ToDoList");
+                return RedirectToAction("Details", "ToDoList", new { id = todo.ToDoListId });
             }
             catch
             {
-                return RedirectToAction(nameof(Error), 404);
+                return RedirectToAction(nameof(Error), new { statusCode = StatusCodes.Status404NotFound });
             }
         }
 
@@ -63,7 +66,7 @@ namespace ToDoListApp.Client.Controllers
 
             if (todo == null)
             {
-                return RedirectToAction(nameof(Error), 404);
+                return RedirectToAction(nameof(Error), new { statusCode = StatusCodes.Status404NotFound });
             }
             return View(todo.ToDoDomainToClientModel());
         }
@@ -81,7 +84,7 @@ namespace ToDoListApp.Client.Controllers
             }
             catch
             {
-                return RedirectToAction(nameof(Error), 404);
+                return RedirectToAction(nameof(Error), new { statusCode = StatusCodes.Status404NotFound });
             }
         }
 
@@ -98,7 +101,7 @@ namespace ToDoListApp.Client.Controllers
             }
             catch
             {
-                return RedirectToAction(nameof(Error), 404);
+                return RedirectToAction(nameof(Error), new { statusCode = StatusCodes.Status404NotFound });
             }
         }
 

@@ -23,6 +23,28 @@
         <a class="btn btn-outline-light float-right font-weight-bold m-1" asp-controller="ToDoList" asp-action="Edit" asp-route-id="@Model.ToDoList.Id">Edit</a>
     </div>
     <h3> To Do's</h3>
+    @{
+        var action = "DetailsHidden";
+        var actionDueToday = "DetailsToday";
+        var text = "Hide Completed";
+        var textDueToday = "Show Due Today";
+        if (Model.HideCompleted)
+        {
+            action = "Details";
+            text = "Show Completed";
 
-    <vc:todos id="@Model.ToDoList.Id" hide-completed="@Model.HideCompleted" />
+        }
+        if (Model.DueToday)
+        {
+            actionDueToday = "Details";
+            textDueToday = "Show All";
+        }
+
+        <a class="btn btn-outline-light float-right font-weight-bold m-1" asp-controller="ToDoList" asp-action="@action" asp-route-id="@Model.ToDoList.Id">@text</a>
+        <a class="btn btn-outline-light float-right font-weight-bold m-1" asp-controller="ToDoList" asp-action="@actionDueToday" asp-route-id="@Model.ToDoList.Id">@textDueToday</a>
+
+    }
+
+
+    <vc:todos id="@Model.ToDoList.Id" hide-completed="@Model.HideCompleted" due-today="@Model.DueToday" />
 </div>

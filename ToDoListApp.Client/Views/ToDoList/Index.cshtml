@@ -2,9 +2,16 @@
 <div class="bg-dark text-white">
     <h1> To Do Lists</h1>
     <div class="card border-0 m-1 p-1 bg-dark">
-        @foreach (var m in Model)
+        @if (Model.Count() == 0)
         {
-            <partial name="ToDoListView" model="m" />
+            <h3>No Todo lists To display</h3>
+        }
+        else
+        {
+            @foreach (var m in Model)
+            {
+                <partial name="ToDoListView" model="m" />
+            }
         }
         <div class="m-1 p-1">
             <a class="btn btn-primary bg-dark btn-outline-light text-light font-weight-bold float-right m-1" asp-controller="ToDoList" asp-action="Create">Create new</a>

@@ -1,7 +1,7 @@
 ﻿@model ToDoModel
 
 <form method="post" enctype="multipart/form-data" asp-action="Create" asp-controller="ToDo">
-    <div asp-validation-summary="All" class="text-danger"></div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="text-light">
         <div class="form-group">
@@ -30,7 +30,7 @@
             <span asp-validation-for="DueDate" class="text-danger"></span>
         </div>
         
-            <input type="hidden" asp-for="ToDoListId"  />
+            <input type="hidden" asp-for="ToDoListId" value="@ViewBag.ListId" />
             <input type="hidden" asp-for="Id" value="0"/>
 
         <div class="form-group">
