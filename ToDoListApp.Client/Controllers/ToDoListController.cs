@@ -54,7 +54,7 @@ namespace ToDoListApp.Client.Controllers
         // POST: ToDoListController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(ToDoListModel list)
+        public async Task<IActionResult> Create(ToDoListModel list)
         {
             if (list == null || !ModelState.IsValid) return RedirectToAction(nameof(Error));
 
@@ -66,7 +66,7 @@ namespace ToDoListApp.Client.Controllers
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Error), 404);
             }
 
         }
@@ -100,7 +100,7 @@ namespace ToDoListApp.Client.Controllers
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Error), 404);
             }
         }
 
@@ -118,7 +118,7 @@ namespace ToDoListApp.Client.Controllers
             }
             catch
             {
-                return StatusCode(404);
+                return RedirectToAction(nameof(Error), 404);
             }
         }
 

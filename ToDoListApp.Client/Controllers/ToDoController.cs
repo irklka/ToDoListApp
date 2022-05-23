@@ -48,7 +48,7 @@ namespace ToDoListApp.Client.Controllers
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Error), 404);
             }
         }
 
@@ -63,7 +63,7 @@ namespace ToDoListApp.Client.Controllers
 
             if (todo == null)
             {
-                return View();
+                return RedirectToAction(nameof(Error), 404);
             }
             return View(todo.ToDoDomainToClientModel());
         }
@@ -81,7 +81,7 @@ namespace ToDoListApp.Client.Controllers
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Error), 404);
             }
         }
 
