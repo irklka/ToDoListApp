@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace ToDoListApp.Client.Models
 {
@@ -18,6 +19,8 @@ namespace ToDoListApp.Client.Models
 
         [Display(Name = "Date Of Creation")]
         public DateTime CreationDate { get; set; } = DateTime.Now;
+        
+        [JsonIgnore]
         public ICollection<ToDoModel> ToDos { get; set; }
 
         //public override string ToString()

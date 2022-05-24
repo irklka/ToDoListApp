@@ -2,12 +2,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows;
 using ToDoListApp.Domain.Interfaces;
 using ToDoListApp.Client.Mappers;
 using ToDoListApp.Client.Models;
 using ToDoListApp.Client.Models.ViewModels;
-using System.Diagnostics;
-using System.Linq;
+using System.Text.Json;
+using ToDoListApp.Domain.Models;
 
 namespace ToDoListApp.Client.Controllers
 {
@@ -53,11 +56,11 @@ namespace ToDoListApp.Client.Controllers
                 return RedirectToAction(nameof(Error), new { statusCode = StatusCodes.Status404NotFound });
             }
 
-            return View(new ToDoListViewModel() 
-            { 
-                ToDoList = toDoList.ToDoListDomainToClientModel(), 
+            return View(new ToDoListViewModel()
+            {
+                ToDoList = toDoList.ToDoListDomainToClientModel(),
                 HideCompleted = hideCompleted,
-                DueToday = dueToday 
+                DueToday = dueToday
             });
         }
 
@@ -136,6 +139,16 @@ namespace ToDoListApp.Client.Controllers
             {
                 return RedirectToAction(nameof(Error), 404);
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Copy(int id)
+        {
+            var list = await _unitOfWork.ToDoLists.GetToDoListWithToDosAsync(id);
+            var jsonTodoList = JsonSerializer.Serialize(list.ToDoListDomainToClientModel());
+            var jsonTodos = from todo in list.ToDos.ListOfToDosDomainToClientModel()
+                            select JsonSerializer.Serialize(todo);
+            return View(nameof(Copy), new ToDoViewModel{ JsonToDoList = jsonTodoList, JsonTodos = jsonTodos });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -17,6 +17,9 @@
             <a class="btn btn-info btn-outline-danger text-light font-weight-bold m-1" onclick="return confirm('Item will be deleted.')" asp-controller="ToDoList" asp-action="Delete" asp-route-id="@Model.Id">
                 Delete
             </a>
+            <a class="btn btn-info btn-outline-success text-light font-weight-bold m-1" asp-controller="ToDoList" asp-action="Copy" asp-route-id="@Model.Id">
+                Copy
+            </a>
         </span>
     </div>
 </div>

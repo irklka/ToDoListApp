@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using ToDoListApp.Domain.Enums;
 
 namespace ToDoListApp.Client.Models
@@ -27,6 +28,8 @@ namespace ToDoListApp.Client.Models
         [DataType(DataType.DateTime)]
         public DateTime? DueDate { get; set; }
         public int ToDoListId { get; set; }
+        
+        [JsonIgnore]
         public ToDoListModel ToDoList { get; set; }
 
         public string PrettyDateTime()

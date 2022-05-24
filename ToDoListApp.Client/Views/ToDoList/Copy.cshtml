@@ -1,0 +1,18 @@
+﻿@model ToDoViewModel
+@{
+    Layout = "";
+
+}
+<div>
+
+    <h3>@Model.JsonToDoList</h3>
+
+    @foreach (var todo in Model.JsonTodos)
+    {
+        <h5>@todo</h5>
+    }
+</div>
+
+ <a asp-controller="ToDoList" asp-action="Index">Back</a>
+
+
