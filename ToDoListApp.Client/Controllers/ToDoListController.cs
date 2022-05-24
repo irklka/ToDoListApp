@@ -41,7 +41,7 @@ namespace ToDoListApp.Client.Controllers
         }
 
         // GET: ToDoListController/Details/5
-        public async Task<ViewResult> Details(int id)
+        public async Task<IActionResult> Details(int id, [FromQuery] bool hideCompleted, bool dueToday)
         {
             if (id <= 0)
             {
@@ -50,42 +50,16 @@ namespace ToDoListApp.Client.Controllers
             var toDoList = await _unitOfWork.ToDoLists.GetByIdAsync(id);
             if (toDoList == null)
             {
-                return View(nameof(Error), new { statusCode = StatusCodes.Status404NotFound });
+                return RedirectToAction(nameof(Error), new { statusCode = StatusCodes.Status404NotFound });
             }
 
-            return View(new ToDoListViewModel() { ToDoList = toDoList.ToDoListDomainToClientModel(), HideCompleted = false, DueToday = false });
+            return View(new ToDoListViewModel() 
+            { 
+                ToDoList = toDoList.ToDoListDomainToClientModel(), 
+                HideCompleted = hideCompleted,
+                DueToday = dueToday 
+            });
         }
-
-        public async Task<ViewResult> DetailsHidden(int id)
-        {
-            if (id <= 0)
-            {
-                return View();
-            }
-            var toDoList = await _unitOfWork.ToDoLists.GetByIdAsync(id);
-            if (toDoList == null)
-            {
-                return View(nameof(Error), new { statusCode = StatusCodes.Status404NotFound });
-            }
-
-            return View("Details", new ToDoListViewModel() { ToDoList = toDoList.ToDoListDomainToClientModel(), HideCompleted = true, DueToday = false });
-        }
-
-        public async Task<ViewResult> DetailsToday(int id)
-        {
-            if (id <= 0)
-            {
-                return View();
-            }
-            var toDoList = await _unitOfWork.ToDoLists.GetByIdAsync(id);
-            if (toDoList == null)
-            {
-                return View(nameof(Error), new { statusCode = StatusCodes.Status404NotFound });
-            }
-
-            return View("Details", new ToDoListViewModel() { ToDoList = toDoList.ToDoListDomainToClientModel(), HideCompleted = false, DueToday = true });
-        }
-
 
         // GET: ToDoListController/Create
         public IActionResult Create()

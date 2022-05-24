@@ -24,24 +24,26 @@
     </div>
     <h3> To Do's</h3>
     @{
-        var action = "DetailsHidden";
-        var actionDueToday = "DetailsToday";
         var text = "Hide Completed";
         var textDueToday = "Show Due Today";
         if (Model.HideCompleted)
         {
-            action = "Details";
             text = "Show Completed";
 
         }
         if (Model.DueToday)
         {
-            actionDueToday = "Details";
             textDueToday = "Show All";
         }
 
-        <a class="btn btn-outline-light float-right font-weight-bold m-1" asp-controller="ToDoList" asp-action="@action" asp-route-id="@Model.ToDoList.Id">@text</a>
-        <a class="btn btn-outline-light float-right font-weight-bold m-1" asp-controller="ToDoList" asp-action="@actionDueToday" asp-route-id="@Model.ToDoList.Id">@textDueToday</a>
+        <a class="btn btn-outline-light float-right font-weight-bold m-1" 
+        asp-controller="ToDoList" asp-action="Details" 
+        asp-route-id="@Model.ToDoList.Id" asp-route-hidecompleted="@(!Model.HideCompleted)" 
+        asp-route-duetoday="@Model.DueToday">@text</a>
+        <a class="btn btn-outline-light float-right font-weight-bold m-1" 
+        asp-controller="ToDoList" asp-action="Details" 
+        asp-route-id="@Model.ToDoList.Id" asp-route-hidecompleted="@Model.HideCompleted" 
+        asp-route-duetoday="@(!Model.DueToday)">@textDueToday</a>
 
     }
 

@@ -16,22 +16,52 @@ namespace ToDoListApp.Client.Components
         public async Task<IViewComponentResult> InvokeAsync(int id, bool hideCompleted = false, bool dueToday = false)
         {
             var todos = await _unitOfWork.ToDo.GetTodosForToDoListWithId(id);
-            if (todos.Count == 0)
+
+            #region oldLogic
+            //if (todos.Count == 0)
+            //{
+            //    return View(todos.ListOfToDosDomainToClientModel());
+            //}
+            //else if (hideCompleted && dueToday)
+            //{
+            //    return View(todos.Where(x => x.Status != 0 &&
+            //                                x.DueDate.HasValue && 
+            //                                x.DueDate.Value.Date == System.DateTime.Today)
+            //                    .ListOfToDosDomainToClientModel());
+            //}
+            //else if (hideCompleted)
+            //{
+            //    return View(todos.Where(x => x.Status != 0)
+            //                        .ListOfToDosDomainToClientModel());
+            //}
+            //else if (dueToday)
+            //{
+            //    return View(todos.Where(x => x.DueDate.HasValue &&
+            //                                x.DueDate.Value.Date == System.DateTime.Today)
+            //                        .ListOfToDosDomainToClientModel());
+            //}
+            //else
+            //{
+            //    return View(todos.ListOfToDosDomainToClientModel());
+            //}
+            #endregion oldLogic
+
+            var res = todos.ListOfToDosDomainToClientModel();
+            if (!res.Any())
             {
-                return View(todos.ListOfToDosDomainToClientModel());
+                return View(res);
             }
-            else if (hideCompleted)
+            if (hideCompleted)
             {
-                return View(todos.Where(x => x.Status != 0).ListOfToDosDomainToClientModel());
+                res = res.Where(x => x.Status != 0);
             }
-            else if (dueToday)
+            if (dueToday)
             {
-                return View(todos.Where(x => x.DueDate.HasValue).Where(x => x.DueDate.Value.Date == System.DateTime.Today).ListOfToDosDomainToClientModel());
+                res = res.Where(x => x.DueDate.HasValue &&
+                                            x.DueDate.Value.Date == System.DateTime.Today);
             }
-            else
-            {
-                return View(todos.ListOfToDosDomainToClientModel());
-            }
+
+            return View(res);
         }
     }
 }
