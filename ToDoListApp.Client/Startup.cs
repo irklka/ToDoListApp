@@ -34,7 +34,6 @@ namespace ToDoListApp.Client
             options.UseSqlServer(
                 Configuration.GetConnectionString("ToDoDbConnection"),
                 b => b.MigrationsAssembly(typeof(ToDoListDbContext).Assembly.FullName)));
-
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IToDoListRepository, ToDoListRepository>();
             services.AddTransient<IToDoRepository, ToDoRepository>();

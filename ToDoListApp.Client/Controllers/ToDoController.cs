@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using ToDoListApp.Client.Mappers;
 using ToDoListApp.Client.Models;
@@ -103,6 +104,13 @@ namespace ToDoListApp.Client.Controllers
             {
                 return RedirectToAction(nameof(Error), new { statusCode = StatusCodes.Status404NotFound });
             }
+        }
+
+        public async Task<ViewResult> ShowDueToday()
+        {
+            var todo = await _unitOfWork.ToDo.FindAsync(x => x.DueDate.HasValue &&
+                                            x.DueDate.Value.Date == System.DateTime.Today);
+            return View(todo.ListOfToDosDomainToClientModel());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
