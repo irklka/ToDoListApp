@@ -17,7 +17,6 @@ namespace ToDoListApp.Client.Models
         [MaxLength(255)]
         public string Description { get; set; }
 
-        [EnumDataType(typeof(ToDoStatus))]
         [Display(Name = "ToDo's Status")]
         public ToDoStatus Status { get; set; }
 
@@ -47,12 +46,5 @@ namespace ToDoListApp.Client.Models
                 _ => "No Enum Selected",
             };
         }
-
-        //public override string ToString()
-        //{
-        //    return $"Id: {Id,-5}\nTitle: {Title,-15}\n" +
-        //        $"Description: {Description}\nCompleted: {Status}\n" +
-        //        $"Due Date: {DueDate.Date:dd:MM:yyyy}";
-        //}
     }
 }

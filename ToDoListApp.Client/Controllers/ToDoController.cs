@@ -13,9 +13,9 @@ namespace ToDoListApp.Client.Controllers
 {
     public class ToDoController : Controller
     {
-        private readonly ILogger<ToDoListController> _logger;
+        private readonly ILogger<ToDoController> _logger;
         private readonly IUnitOfWork _unitOfWork;
-        public ToDoController(ILogger<ToDoListController> logger, IUnitOfWork unitOfWork)
+        public ToDoController(ILogger<ToDoController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
@@ -37,7 +37,7 @@ namespace ToDoListApp.Client.Controllers
         // POST: ToDoController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(ToDoModel todo)
+        public async Task<RedirectToActionResult> Create(ToDoModel todo)
         {
             if (todo == null || !ModelState.IsValid)
             {
@@ -75,7 +75,7 @@ namespace ToDoListApp.Client.Controllers
         // POST: ToDoController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, ToDoModel todo)
+        public RedirectToActionResult Edit(int id, ToDoModel todo)
         {
             try
             {
@@ -91,7 +91,7 @@ namespace ToDoListApp.Client.Controllers
 
         // POST: ToDoController/Delete/5
         [HttpGet]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<RedirectToActionResult> Delete(int id)
         {
             try
             {

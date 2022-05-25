@@ -1,6 +1,9 @@
 ﻿@model IEnumerable<ToDoListModel>
 <div class="bg-dark text-white">
     <h1> To Do Lists</h1>
+    <div class="m-1 p-1">
+        <a class="btn bg-dark alert-danger text-light font-weight-bold m-1" asp-controller="ToDo" asp-action="ShowDueToday">Todo's due today</a>
+    </div>
     <div class="card border-0 m-1 p-1 bg-dark">
         @if (Model.Count() == 0)
         {

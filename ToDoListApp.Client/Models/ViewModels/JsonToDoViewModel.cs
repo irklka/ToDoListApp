@@ -2,7 +2,7 @@
 
 namespace ToDoListApp.Client.Models.ViewModels
 {
-    public class ToDoViewModel
+    public class JsonToDoViewModel
     { 
         public string JsonToDoList { get; set; }
         public IEnumerable<string> JsonTodos { get; set; }
