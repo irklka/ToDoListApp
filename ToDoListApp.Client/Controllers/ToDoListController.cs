@@ -167,7 +167,9 @@ namespace ToDoListApp.Client.Controllers
             }
         }
 
-        // Get: ToDoListController/Delete/5
+        // POST: ToDoListController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<RedirectToActionResult> Delete(int id)
         {
             if (id <= 0)

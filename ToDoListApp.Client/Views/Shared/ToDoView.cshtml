@@ -12,13 +12,13 @@
         <div class="panel-body badge badge-success ">
             <p class="form-text align-middle h6 pt-1">Due Date: @Model.PrettyDateTime()</p>
         </div>
-        <a class="btn btn-danger btn-sm pull-right float-right h6 m-1" onclick="return confirm('Item will be deleted.')" asp-controller="ToDo" asp-action="Delete" asp-route-id="@Model.Id">
-            Delete
-        </a>
+        <form method="post" enctype="multipart/form-data" asp-controller="ToDo" asp-action="Delete" asp-route-id="@Model.Id">
+            <input type="submit" onclick="return confirm('Item will be deleted.')" value="Delete" class="btn btn-danger btn-sm btn-outline-danger text-light font-weight-bold float-right m-1" />
+        </form>
         <a class="btn btn-secondary btn-outline-light text-dark bg-light btn-sm pull-right float-right h6 m-1" asp-controller="ToDo" asp-action="Details" asp-route-id="@Model.Id">
             Details
         </a>
-        <a class="btn btn-sucess btn-outline-light btn-sm pull-right float-right h6 m-1"  asp-controller="ToDo" asp-action="Edit" asp-route-id="@Model.Id">
+        <a class="btn btn-sucess btn-outline-light btn-sm pull-right float-right h6 m-1" asp-controller="ToDo" asp-action="Edit" asp-route-id="@Model.Id">
             Edit
         </a>
     </div>

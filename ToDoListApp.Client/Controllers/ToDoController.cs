@@ -71,7 +71,7 @@ namespace ToDoListApp.Client.Controllers
             {
                 _logger.LogError($"item was invalid IsValid:{ModelState.IsValid}. Controller{nameof(Create)}");
 
-                return RedirectToAction(nameof(Error), new { statusCode = StatusCodes.Status403Forbidden });
+                return RedirectToAction(nameof(Error), new { statusCode = StatusCodes.Status406NotAcceptable });
             }
 
             try
@@ -144,7 +144,9 @@ namespace ToDoListApp.Client.Controllers
             }
         }
 
-        // Get: ToDoController/Delete/5
+        // Post: ToDoController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<RedirectToActionResult> Delete(int id)
         {
             if (id <= 0)

@@ -14,9 +14,9 @@
             <a class="btn btn-info btn-outline-warning text-light font-weight-bold m-1" asp-controller="ToDoList" asp-action="Details" asp-route-id="@Model.Id">
                 Details
             </a>
-            <a class="btn btn-info btn-outline-danger text-light font-weight-bold m-1" onclick="return confirm('Item will be deleted.')" asp-controller="ToDoList" asp-action="Delete" asp-route-id="@Model.Id">
-                Delete
-            </a>
+            <form method="post" enctype="multipart/form-data" asp-controller="ToDoList" asp-action="Delete" asp-route-id="@Model.Id">
+                <input type="submit" onclick="return confirm('Item will be deleted.')" value="Delete" class="btn btn-info btn-outline-danger text-light font-weight-bold m-1" />
+            </form>
             <a class="btn btn-info btn-outline-success text-light font-weight-bold m-1" asp-controller="ToDoList" asp-action="Copy" asp-route-id="@Model.Id">
                 Copy
             </a>
