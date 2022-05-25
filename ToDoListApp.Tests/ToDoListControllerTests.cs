@@ -3,26 +3,24 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using ToDoListApp.Client.Controllers;
 using ToDoListApp.Client.Models;
-using ToDoListApp.Client.Models.ViewModels;
 using ToDoListApp.Domain.Interfaces;
 using ToDoListApp.Domain.Models;
 
 namespace ToDoListApp.Tests
 {
+    [TestFixture]
     public class ToDoListControllerTests
     {
         private Mock<IUnitOfWork> mockRepo;
         private Mock<ILogger<ToDoListController>> mockListLogger;
-        private Mock<ILogger<ToDoController>> mockTodoLogger;
+
         [SetUp]
         public void Setup()
         {
             mockRepo = new Mock<IUnitOfWork>();
             mockListLogger = new Mock<ILogger<ToDoListController>>();
-            mockTodoLogger = new Mock<ILogger<ToDoController>>();
         }
 
         [Test]
@@ -58,15 +56,17 @@ namespace ToDoListApp.Tests
         }
 
         [Test]
-        public void Details_Returns_ViewResult_If_Model_Is_Returned()
+        [TestCase(1)]
+        [TestCase(2)]
+        public void Details_Returns_ViewResult_If_Model_Is_Returned(int id)
         {
             // Arrange
-            mockRepo.Setup(repo => repo.ToDoLists.GetByIdAsync(1).Result)
+            mockRepo.Setup(repo => repo.ToDoLists.GetByIdAsync(It.IsAny<int>()).Result)
                     .Returns(GetTestToDoLists()[0]);
             var controller = new ToDoListController(mockListLogger.Object, mockRepo.Object);
             
             // Act
-            var result = controller.Details(1, It.IsAny<bool>(), It.IsAny<bool>()).Result;
+            var result = controller.Details(id, It.IsAny<bool>(), It.IsAny<bool>()).Result;
             
             // Assert
             Assert.That(result, Is.TypeOf<ViewResult>());
@@ -74,15 +74,17 @@ namespace ToDoListApp.Tests
         }
 
         [Test]
-        public void Details_Returns_RedirectToActionResult_And_Repository_Method_Is_Not_Called_If_Id_Passed_Is_Invalid ()
+        [TestCase(0)]
+        [TestCase(-1)]
+        public void Details_Returns_RedirectToActionResult_And_Repository_Method_Is_Not_Called_If_Id_Passed_Is_Invalid (int id)
         {
             // Arrange
-            mockRepo.Setup(repo => repo.ToDoLists.GetByIdAsync(1).Result)
+            mockRepo.Setup(repo => repo.ToDoLists.GetByIdAsync(It.IsAny<int>()).Result)
                     .Returns(GetTestToDoLists()[0]);
             var controller = new ToDoListController(mockListLogger.Object, mockRepo.Object);
 
             // Act
-            var result = controller.Details(0, It.IsAny<bool>(), It.IsAny<bool>()).Result;
+            var result = controller.Details(id, It.IsAny<bool>(), It.IsAny<bool>()).Result;
 
             // Assert
             Assert.That(result, Is.TypeOf<RedirectToActionResult>());
@@ -90,15 +92,17 @@ namespace ToDoListApp.Tests
         }
 
         [Test]
-        public void Details_Returns_RedirectToActionResult_And_Repository_Method_Is_Called_If_Model_Doesnt_exist()
+        [TestCase(1)]
+        [TestCase(2)]
+        public void Details_Returns_RedirectToActionResult_And_Repository_Method_Is_Called_If_Model_Doesnt_exist(int id)
         {
             // Arrange
-            mockRepo.Setup(repo => repo.ToDoLists.GetByIdAsync(1).Result)
+            mockRepo.Setup(repo => repo.ToDoLists.GetByIdAsync(It.IsAny<int>()).Result)
                     .Returns((ToDoList)null);
             var controller = new ToDoListController(mockListLogger.Object, mockRepo.Object);
 
             // Act
-            var result = controller.Details(1, It.IsAny<bool>(), It.IsAny<bool>()).Result;
+            var result = controller.Details(id, It.IsAny<bool>(), It.IsAny<bool>()).Result;
 
             // Assert
             Assert.That(result, Is.TypeOf<RedirectToActionResult>());
@@ -134,14 +138,15 @@ namespace ToDoListApp.Tests
         }
 
         [Test]
-        public void Create_Post_Returns_RedirectToActionResult_And_Repository_Method_Is_Not_Called_If_Model_Is_Null_Or_Invalid()
+        [TestCase(null)]
+        public void Create_Post_Returns_RedirectToActionResult_And_Repository_Method_Is_Not_Called_If_Model_Is_Null_Or_Invalid(ToDoListModel list)
         {
             // Arrange
             mockRepo.Setup(repo => repo.ToDoLists.Add(It.IsAny<ToDoList>()));
             var controller = new ToDoListController(mockListLogger.Object, mockRepo.Object);
 
             // Act
-            var result = controller.Create(null).Result;
+            var result = controller.Create(list).Result;
 
             // Assert
             Assert.That(result, Is.TypeOf<RedirectToActionResult>());
@@ -149,15 +154,17 @@ namespace ToDoListApp.Tests
         }
 
         [Test]
-        public void Edit_Returns_ViewResult_If_Model_Is_Returned()
+        [TestCase(1)]
+        [TestCase(2)]
+        public void Edit_Returns_ViewResult_If_Model_Is_Returned(int id)
         {
             // Arrange
-            mockRepo.Setup(repo => repo.ToDoLists.GetByIdAsync(1).Result)
+            mockRepo.Setup(repo => repo.ToDoLists.GetByIdAsync(It.IsAny<int>()).Result)
                     .Returns(GetTestToDoLists()[0]);
             var controller = new ToDoListController(mockListLogger.Object, mockRepo.Object);
             
             // Act
-            var result = controller.Edit(1).Result;
+            var result = controller.Edit(id).Result;
             
             // Assert
             Assert.That(result, Is.TypeOf<ViewResult>());
@@ -165,15 +172,17 @@ namespace ToDoListApp.Tests
         }
 
         [Test]
-        public void Edit_Returns_RedirectToActionResult_And_Repository_Method_Is_Not_Called__If_Id_Is_Invalid()
+        [TestCase(0)]
+        [TestCase(-1)]
+        public void Edit_Returns_RedirectToActionResult_And_Repository_Method_Is_Not_Called__If_Id_Is_Invalid(int id)
         {
             // Arrange
-            mockRepo.Setup(repo => repo.ToDoLists.GetByIdAsync(1).Result)
+            mockRepo.Setup(repo => repo.ToDoLists.GetByIdAsync(It.IsAny<int>()).Result)
                     .Returns(GetTestToDoLists()[0]);
             var controller = new ToDoListController(mockListLogger.Object, mockRepo.Object);
 
             // Act
-            var result = controller.Edit(0).Result;
+            var result = controller.Edit(id).Result;
 
             // Assert
             Assert.That(result, Is.TypeOf<RedirectToActionResult>());
@@ -181,14 +190,16 @@ namespace ToDoListApp.Tests
         }
 
         [Test]
-        public void Edit_Post_Returns_RedirectToActionResult()
+        [TestCase(1)]
+        [TestCase(2)]
+        public void Edit_Post_Returns_RedirectToActionResult(int id)
         {
             // Arrange
             mockRepo.Setup(repo => repo.ToDoLists.Update(GetTestToDoLists()[0]));
             var controller = new ToDoListController(mockListLogger.Object, mockRepo.Object);
 
             // Act
-            var result = controller.Edit(1, GetTestToDoListModels()[0]);
+            var result = controller.Edit(id, GetTestToDoListModels()[0]);
 
             // Assert
             Assert.That(result, Is.TypeOf<RedirectToActionResult>());
@@ -214,19 +225,21 @@ namespace ToDoListApp.Tests
         }
 
         [Test]
-        public void Delete_Returns_RedirectToActionResult()
+        [TestCase(1)]
+        [TestCase(2)]
+        public void Delete_Returns_RedirectToActionResult(int id)
         {
             // Arrange
-            mockRepo.Setup(repo => repo.ToDoLists.GetByIdAsync(1).Result)
+            mockRepo.Setup(repo => repo.ToDoLists.GetByIdAsync(It.IsAny<int>()).Result)
                     .Returns(GetTestToDoLists()[0]);
-            mockRepo.Setup(repo => repo.ToDo.GetTodosForToDoListWithId(1).Result)
+            mockRepo.Setup(repo => repo.ToDo.GetTodosForToDoListWithId(It.IsAny<int>()).Result)
                     .Returns(GetTestToDos());
             mockRepo.Setup(repo => repo.ToDoLists.Remove(It.IsAny<ToDoList>()));
             mockRepo.Setup(repo => repo.ToDo.RemoveRange(It.IsAny<IEnumerable<ToDo>>()));
             var controller = new ToDoListController(mockListLogger.Object, mockRepo.Object);
 
             // Act
-            var result = controller.Delete(1).Result;
+            var result = controller.Delete(id).Result;
 
             // Assert
             Assert.That(result, Is.TypeOf<RedirectToActionResult>());
@@ -237,41 +250,45 @@ namespace ToDoListApp.Tests
         }
 
         [Test]
-        public void Delete_Returns_RedirectToActionResult_And_Repository_TwoOutOfFour_Methods_Are_Called__If_Model_With_Id_Doesnt_Exists()
+        [TestCase(1)]
+        [TestCase(2)]
+        public void Delete_Returns_RedirectToActionResult_And_Repository_TwoOutOfFour_Methods_Are_Called__If_Model_With_Id_Doesnt_Exists(int id)
         {
             // Arrange
-            mockRepo.Setup(repo => repo.ToDoLists.GetByIdAsync(1).Result)
+            mockRepo.Setup(repo => repo.ToDoLists.GetByIdAsync(It.IsAny<int>()).Result)
                     .Returns((ToDoList)null);
-            mockRepo.Setup(repo => repo.ToDo.GetTodosForToDoListWithId(1).Result)
+            mockRepo.Setup(repo => repo.ToDo.GetTodosForToDoListWithId(It.IsAny<int>()).Result)
                     .Returns((List<ToDo>)null);
             mockRepo.Setup(repo => repo.ToDoLists.Remove(It.IsAny<ToDoList>()));
             mockRepo.Setup(repo => repo.ToDo.RemoveRange(It.IsAny<IEnumerable<ToDo>>()));
             var controller = new ToDoListController(mockListLogger.Object, mockRepo.Object);
 
             // Act
-            var result = controller.Delete(1).Result;
+            var result = controller.Delete(id).Result;
 
             // Assert
             Assert.That(result, Is.TypeOf<RedirectToActionResult>());
             mockRepo.Verify(x => x.ToDoLists.GetByIdAsync(It.IsAny<int>()), Times.Exactly(1));
             mockRepo.Verify(x => x.ToDo.GetTodosForToDoListWithId(It.IsAny<int>()), Times.Exactly(1));
-                //Update methods not called
+            //Remove methods not called
             mockRepo.Verify(x => x.ToDoLists.Remove(It.IsAny<ToDoList>()), Times.Exactly(0));
             mockRepo.Verify(x => x.ToDo.RemoveRange(It.IsAny<IEnumerable<ToDo>>()), Times.Exactly(0));
         }
 
         [Test]
-        public void Copy_Returns_ViewResult()
+        [TestCase(1)]
+        [TestCase(2)]
+        public void Copy_Returns_ViewResult(int id)
         {
             // Arrange
             var listWithTodos = GetTestToDoLists()[0];
             listWithTodos.ToDos = GetTestToDos();
-            mockRepo.Setup(repo => repo.ToDoLists.GetToDoListWithToDosAsync(1).Result)
+            mockRepo.Setup(repo => repo.ToDoLists.GetToDoListWithToDosAsync(It.IsAny<int>()).Result)
                     .Returns(listWithTodos);
             var controller = new ToDoListController(mockListLogger.Object, mockRepo.Object);
 
             // Act
-            var result = controller.Copy(1).Result;
+            var result = controller.Copy(id).Result;
 
             // Assert
             Assert.That(result, Is.TypeOf<ViewResult>());
@@ -286,7 +303,7 @@ namespace ToDoListApp.Tests
             // Arrange
             var listWithTodos = GetTestToDoLists()[0];
             listWithTodos.ToDos = GetTestToDos();
-            mockRepo.Setup(repo => repo.ToDoLists.GetToDoListWithToDosAsync(1).Result)
+            mockRepo.Setup(repo => repo.ToDoLists.GetToDoListWithToDosAsync(It.IsAny<int>()).Result)
                     .Returns(listWithTodos);
             var controller = new ToDoListController(mockListLogger.Object, mockRepo.Object);
 
@@ -304,7 +321,7 @@ namespace ToDoListApp.Tests
         public void Copy_Returns_ViewResult_If_Model_With_Id_Was_Not_Found_Repository_Method_Is_Called(int id)
         {
             // Arrange
-            mockRepo.Setup(repo => repo.ToDoLists.GetToDoListWithToDosAsync(1).Result)
+            mockRepo.Setup(repo => repo.ToDoLists.GetToDoListWithToDosAsync(It.IsAny<int>()).Result)
                     .Returns((ToDoList)null);
             var controller = new ToDoListController(mockListLogger.Object, mockRepo.Object);
 

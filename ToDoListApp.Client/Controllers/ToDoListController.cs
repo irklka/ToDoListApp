@@ -128,12 +128,12 @@ namespace ToDoListApp.Client.Controllers
 
             if (list == null)
             {
-                _logger.LogError($"Item with {id} was not found. Controller{nameof(Edit)}");
+                _logger.LogError($"item with id:{id} was not found. Controller{nameof(Edit)}");
 
                 return RedirectToAction(nameof(Error), new { statusCode = StatusCodes.Status406NotAcceptable });
             }
 
-            _logger.LogInformation($"Item with {id} was found. Controller{nameof(Edit)}");
+            _logger.LogInformation($"Item with id:{id} was found. Controller{nameof(Edit)}");
 
             return View(list.ToDoListDomainToClientModel());
         }
@@ -167,7 +167,7 @@ namespace ToDoListApp.Client.Controllers
             }
         }
 
-        [HttpDelete]
+        // Get: ToDoListController/Delete/5
         public async Task<RedirectToActionResult> Delete(int id)
         {
             if (id <= 0)
