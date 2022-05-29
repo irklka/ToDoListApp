@@ -203,18 +203,18 @@ namespace ToDoListApp.Client.Controllers
             {
                 _logger.LogError($"Error during deleting item with id:{id}. Controller{nameof(Delete)}");
 
-                return RedirectToAction(nameof(Error), 404);
+                return RedirectToAction(nameof(Error), new { statusCode = StatusCodes.Status404NotFound });
             }
         }
 
         [HttpGet]
-        public async Task<ViewResult> Copy(int id)
+        public async Task<IActionResult> Copy(int id)
         {
             if(id <= 0)
             {
                 _logger.LogError($"Error during copying item with id:{id}. Controller{nameof(Copy)}");
-                
-                return View();
+
+                return RedirectToAction(nameof(Error), new { statusCode = StatusCodes.Status404NotFound });
             }
             var list = await _unitOfWork.ToDoLists.GetToDoListWithToDosAsync(id);
 
@@ -222,7 +222,7 @@ namespace ToDoListApp.Client.Controllers
             {
                 _logger.LogError($"Error during copying item with id:{id}. Controller{nameof(Copy)}");
 
-                return View();
+                return RedirectToAction(nameof(Error), new { statusCode = StatusCodes.Status404NotFound });
             }
 
             var jsonTodoList = JsonSerializer.Serialize(list.ToDoListDomainToClientModel());
