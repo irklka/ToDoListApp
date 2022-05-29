@@ -298,7 +298,7 @@ namespace ToDoListApp.Tests
         [Test]
         [TestCase(0)]
         [TestCase(-1)]
-        public void Copy_Returns_ViewResult_If_Id_Is_Invalid_Repository_Method_Is_Not_Called(int id)
+        public void Copy_Returns_RedirectToActionResult_If_Id_Is_Invalid_Repository_Method_Is_Not_Called(int id)
         {
             // Arrange
             var listWithTodos = GetTestToDoLists()[0];
@@ -311,14 +311,14 @@ namespace ToDoListApp.Tests
             var result = controller.Copy(id).Result;
 
             // Assert
-            Assert.That(result, Is.TypeOf<ViewResult>());
+            Assert.That(result, Is.TypeOf<RedirectToActionResult>());
             mockRepo.Verify(x => x.ToDoLists.GetToDoListWithToDosAsync(It.IsAny<int>()), Times.Exactly(0));
         }
 
         [Test]
         [TestCase(1)]
         [TestCase(2)]
-        public void Copy_Returns_ViewResult_If_Model_With_Id_Was_Not_Found_Repository_Method_Is_Called(int id)
+        public void Copy_Returns_RedirectToActionResult_If_Model_With_Id_Was_Not_Found_Repository_Method_Is_Called(int id)
         {
             // Arrange
             mockRepo.Setup(repo => repo.ToDoLists.GetToDoListWithToDosAsync(It.IsAny<int>()).Result)
@@ -329,7 +329,7 @@ namespace ToDoListApp.Tests
             var result = controller.Copy(id).Result;
 
             // Assert
-            Assert.That(result, Is.TypeOf<ViewResult>());
+            Assert.That(result, Is.TypeOf<RedirectToActionResult>());
             mockRepo.Verify(x => x.ToDoLists.GetToDoListWithToDosAsync(It.IsAny<int>()), Times.Exactly(1));
         }
 
