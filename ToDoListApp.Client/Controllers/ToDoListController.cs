@@ -184,11 +184,11 @@ namespace ToDoListApp.Client.Controllers
                 var list = await _unitOfWork.ToDoLists.GetByIdAsync(id);
                 var todos = await _unitOfWork.ToDo.GetTodosForToDoListWithId(id);
                 
-                if(list == null || todos == null)
+                if(list == null)
                 {
                     _logger.LogError($"Error during deleting item with id:{id}. Controller{nameof(Delete)}");
 
-                    return RedirectToAction(nameof(Error), new { statusCode = StatusCodes.Status406NotAcceptable });
+                    return RedirectToAction(nameof(Error), new { statusCode = StatusCodes.Status404NotFound });
                 }
 
                 _unitOfWork.ToDo.RemoveRange(todos);

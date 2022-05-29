@@ -34,10 +34,10 @@ namespace ToDoListApp.Client
             options.UseSqlServer(
                 Configuration.GetConnectionString("ToDoDbConnection"),
                 b => b.MigrationsAssembly(typeof(ToDoListDbContext).Assembly.FullName)));
-            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddTransient<IToDoListRepository, ToDoListRepository>();
-            services.AddTransient<IToDoRepository, ToDoRepository>();
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<IToDoListRepository, ToDoListRepository>();
+            services.AddScoped<IToDoRepository, ToDoRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
