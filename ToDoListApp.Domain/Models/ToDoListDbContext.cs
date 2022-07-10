@@ -22,11 +22,5 @@ namespace ToDoListApp.Domain.Models
             //        v => v.ToString(),
             //        v => Enum.Parse<ToDoStatus>(v));
         }
-
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseSqlServer("Server=.;Database=ToDoListDb;Integrated Security=True;");
-        //    base.OnConfiguring(optionsBuilder);
-        //}
     }
 }

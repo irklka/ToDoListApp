@@ -5,13 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ToDoListApp.Domain.Interfaces;
 using ToDoListApp.Domain.Models;
-using ToDoListApp.Domain.Models.Repo;
 using ToDoListApp.Domain.Models.UnitOfWork;
 
 namespace ToDoListApp.Client
@@ -34,9 +29,6 @@ namespace ToDoListApp.Client
             options.UseSqlServer(
                 Configuration.GetConnectionString("ToDoDbConnection"),
                 b => b.MigrationsAssembly(typeof(ToDoListDbContext).Assembly.FullName)));
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddScoped<IToDoListRepository, ToDoListRepository>();
-            services.AddScoped<IToDoRepository, ToDoRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 

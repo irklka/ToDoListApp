@@ -1,16 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Linq;
-using System.Windows;
+using System.Text.Json;
+using System.Threading.Tasks;
 using ToDoListApp.Domain.Interfaces;
 using ToDoListApp.Client.Mappers;
 using ToDoListApp.Client.Models;
 using ToDoListApp.Client.Models.ViewModels;
-using System.Text.Json;
-using ToDoListApp.Domain.Models;
 
 namespace ToDoListApp.Client.Controllers
 {

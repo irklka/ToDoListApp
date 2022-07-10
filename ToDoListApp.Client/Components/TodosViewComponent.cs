@@ -17,35 +17,6 @@ namespace ToDoListApp.Client.Components
         {
             var todos = await _unitOfWork.ToDo.GetTodosForToDoListWithId(id);
 
-            #region oldLogic
-            //if (todos.Count == 0)
-            //{
-            //    return View(todos.ListOfToDosDomainToClientModel());
-            //}
-            //else if (hideCompleted && dueToday)
-            //{
-            //    return View(todos.Where(x => x.Status != 0 &&
-            //                                x.DueDate.HasValue && 
-            //                                x.DueDate.Value.Date == System.DateTime.Today)
-            //                    .ListOfToDosDomainToClientModel());
-            //}
-            //else if (hideCompleted)
-            //{
-            //    return View(todos.Where(x => x.Status != 0)
-            //                        .ListOfToDosDomainToClientModel());
-            //}
-            //else if (dueToday)
-            //{
-            //    return View(todos.Where(x => x.DueDate.HasValue &&
-            //                                x.DueDate.Value.Date == System.DateTime.Today)
-            //                        .ListOfToDosDomainToClientModel());
-            //}
-            //else
-            //{
-            //    return View(todos.ListOfToDosDomainToClientModel());
-            //}
-            #endregion oldLogic
-
             var res = todos.ListOfToDosDomainToClientModel();
             if (!res.Any())
             {

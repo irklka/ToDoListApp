@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using ToDoListApp.Client.Mappers;
 using ToDoListApp.Client.Models;
